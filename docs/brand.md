@@ -17,6 +17,8 @@ Assets:
 - [Light presentation](../assets/ahfora-logo-light.svg)
 - [Monochrome wordmark](../assets/ahfora-logo-mono.svg)
 - [Square mark](../assets/ahfora-icon.svg)
+- [Workflow diagram](../assets/ahfora-workflow.svg) — orchestrator, roles, memory,
+  user decisions and the QA/developer correction cycle.
 
 SVG assets are scalable, self-contained and have accessible titles/descriptions.
 Keep the aspect ratio and sufficient empty space around the mark. The wordmark uses

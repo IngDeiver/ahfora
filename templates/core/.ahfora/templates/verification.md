@@ -1,12 +1,12 @@
 ---
-spec_id: "<id>"
+spec_id: "<four-digit-id>"
 spec_revision: 1
 plan_revision: 1
 verified_code_revision: "<commit or file/digest inventory>"
 execution_mode: "<native-subagent or sequential-role>"
 ---
 
-# Verification — <title>
+# Verification — SPEC <four-digit-id> — <title>
 
 ## Environment and scope
 

@@ -14,6 +14,10 @@ metadata:
 - User stories explain value; requirements define obligations; scenarios demonstrate
   observable acceptance. One cannot replace the others.
 - Separate current observations from intended behavior. Ask about missing rules.
+- Before questions, identify **SPEC 0001 — <title>**, its destination path and phase
+  using the orchestrator's reserved ID. Repeat ID/title in question batches and at
+  review. Return `user_message` for the orchestrator to relay when subagent output
+  is hidden. Never guess an ID or leave the active spec unidentified to the user.
 - Assign stable FR/NFR/AC IDs and connect every requirement to verification.
 - Ask focused questions and STOP for their answers. Record only explicitly approved
   assumptions. Avoid choosing an implementation in the behavior contract.
@@ -59,3 +63,4 @@ command is prescribed. Verification commands are agreed during planning.
 - [EARS patterns](references/ears.md)
 - [Requirement review](references/quality.md)
 - [Spec template](../../../.ahfora/templates/spec.md)
+- [Short spec identity and allocation](../../../.ahfora/spec-identity.md)

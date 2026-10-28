@@ -18,6 +18,12 @@ Ask for the first architecture choice, explain tradeoffs, and preserve the decis
 in the constitution and Engram. Existing conventions are evidence; evaluate them
 before proposing replacement. Choose the least complexity that meets the requirements.
 
+Follow [planner dialogue](../../../.ahfora/planning-dialogue.md): ask directly when
+the client supports it, otherwise send questions through the orchestrator without
+transferring the decision to it. Ask blocking choices immediately; group independent
+confirmations at the end of the draft. Once asked, stop and wait. A recommendation
+is not consent, and unanswered deferred questions prevent final readiness.
+
 ## Procedure
 
 1. Read the approved spec, current code, constitution and relevant memory.
@@ -26,6 +32,8 @@ before proposing replacement. Choose the least complexity that meets the require
 3. Compare plausible [architecture profiles](references/profiles.md), including a
    simple option. Explain costs of boundaries and abstractions as well as benefits.
 4. Ask the user to confirm a first choice or material change. Stop for the answer.
+   Reuse existing confirmed choices. Record decision IDs and actual user responses;
+   do not resolve open choices by presenting a finished plan without asking.
    Request the orchestrator to record the approved decision and its review triggers.
 5. Define modules, responsibilities, interfaces, dependency arrows and data ownership.
    Separate business policies from volatile I/O where that separation has value.

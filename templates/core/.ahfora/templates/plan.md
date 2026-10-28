@@ -1,12 +1,12 @@
 ---
-spec_id: "<id>"
+spec_id: "<four-digit-id>"
 spec_revision: 1
 revision: 1
 planner_model: "<confirmed effective model or explicitly approved fallback>"
 model_confirmation: "<source and user decision reference>"
 ---
 
-# Plan — <title>
+# Plan — SPEC <four-digit-id> — <title>
 
 ## Inputs and gates
 
@@ -24,6 +24,20 @@ model_confirmation: "<source and user decision reference>"
 
 For prices/platform behavior, include source, date and assumptions. Distinguish
 estimates from measured values. Ask the user about material tradeoffs.
+
+## Decisions and user questions
+
+Follow `.ahfora/planning-dialogue.md`. Ask dependent/high-impact choices immediately;
+group independent confirmations at the end of the draft. Once asked, stop and wait.
+Reuse approved answers; do not mark a recommendation as the user's choice.
+
+| ID | Question / choice | Timing | Options and recommendation | Status | Actual answer / delegation and reference | Affected sections/tasks |
+| --- | --- | --- | --- | --- | --- | --- |
+| D-001 | TODO | ask-now or end-of-draft | TODO | pending | Awaiting user | TODO |
+
+Statuses: `pending`, `answered`, `delegated` (explicit user-granted scope only).
+If no new decisions are needed, state that and reference the confirmed choices.
+Unresolved required decisions, including final confirmations, block readiness.
 
 ## Architecture and responsibilities
 
@@ -66,3 +80,4 @@ Explain proportional use of SOLID and why proposed abstractions are warranted.
 - [ ] Tasks have verifiable outcomes and file ownership.
 - [ ] E2E decision and feasible test environments are recorded.
 - [ ] No blocking ambiguity; plan/tasks are ready for user approval.
+- [ ] Required user decisions, including deferred questions, are answered or explicitly delegated.

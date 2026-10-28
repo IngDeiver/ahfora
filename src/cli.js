@@ -70,7 +70,7 @@ export async function run(args, { cwd = process.cwd(), stdout = process.stdout, 
       if (options.dryRun || entry.action === 'preserve') stdout.write(`  ${entry.action}: ${entry.path}\n`);
     }
     stdout.write(`${Object.entries(counts).map(([action, count]) => `${count} ${action}`).join(', ')}\n`);
-    if (!options.dryRun) stdout.write('Next: open or restart your AI client and ask it to read AGENTS.md and bootstrap AHFORA. It must verify Engram and confirm project settings before starting a spec.\n');
+    if (!options.dryRun) stdout.write('Next: open or restart your compatible AI client in this directory and describe what you want to build. AHFORA starts from the project instructions; no activation prompt is needed.\n');
     return 0;
   } catch (error) { stderr.write(`AHFORA: ${error.message}\n`); return 1; }
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "specId": "<id>",
-  "specPath": "specs/<id>-<slug>",
+  "specId": "<four-digit-id>",
+  "specPath": "specs/<four-digit-id>-<slug>",
   "revision": 1,
   "phase": "specifying",
   "resumePhase": null,

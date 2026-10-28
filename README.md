@@ -18,6 +18,16 @@ AHFORA is model- and application-stack-agnostic. It deliberately requires
 It supports native adapters for Claude Code, OpenCode and Gemini CLI, plus a generic
 sequential-role mode for other capable coding agents.
 
+## How it works
+
+![AHFORA workflow: your main agent coordinates the spec author, planner, developer and QA, supported by Engram and project state, with user approvals and a correction loop.](assets/ahfora-workflow.svg)
+
+The **main agent orchestrates every handoff**. Specialists own their assigned work;
+Engram supplies persistent memory, while project files retain the current requirements,
+decisions and progress. You approve the spec, the plan and the verified result.
+
+[Open the full-size diagram](assets/ahfora-workflow.svg).
+
 ## Why AHFORA?
 
 - **Specifications that can be tested:** user stories, EARS requirements, measurable
@@ -77,39 +87,55 @@ PowerShell. For reproducible installations, replace `@latest` with an exact rele
 ### Choose your mode
 
 - **Generic (default):** installs the shared instructions, roles, skills and templates
-  without client-specific registration files. Tell your agent to read `AGENTS.md`;
-  it can perform the roles sequentially. Separate subagent contexts are not required.
+  for clients that automatically load `AGENTS.md`, without native subagent registration.
+  The agent can perform the roles sequentially; separate contexts are not required.
 - **Native adapters:** select `claude`, `opencode`, `gemini`, or `all` to also register
   specialist subagents in those clients' own directories. The main agent delegates
   work to them while following the same canonical rules.
+
+The responsible native subagent must do its assigned work when available. If it
+cannot run or lacks a required capability, the orchestrator explains the specific
+problem and offers a viable alternative before continuing in another mode. Sequential
+execution or saving a specialist's text on its behalf requires an explicit, scoped
+decision; a previously approved fallback can be reused with a visible explanation.
 
 For Claude Code, OpenCode or Gemini CLI, select the matching adapter. Both modes
 require Engram and follow the same specification, approval and verification process.
 
 ## Start working with your AI
 
-Open or restart your client so it can discover the generated files. Then ask:
+Open your AI client inside the project and describe what you want to develop:
 
-> Read AGENTS.md and bootstrap AHFORA for this project. Verify Engram access, inspect
-> the existing project if there is one, and ask me to confirm the architecture,
-> verification commands and high-reasoning model profile.
+> Build a task manager with projects, due dates and reminders.
 
-AHFORA leaves application commands and architecture choices to the project owner.
-Complete them through that conversation in `docs/constitution.md`. Map the planner's
-`high-reasoning` profile to a model you actually have available; the profile does not
-magically configure your client. See [client integration](docs/clients.md).
+**No activation prompt is needed.** The client loads the project's instructions and
+the agent starts AHFORA's readiness checks and SDD workflow automatically. OpenCode
+loads `AGENTS.md`; the Claude and Gemini adapters import it from their native context
+files. If the client was already open during installation, restart it once to load
+the new instructions. See [client integration](docs/clients.md).
+
+The agent checks Engram, recovers existing work and chooses the appropriate role.
+Every subagent uses your selected model; if that choice is unknown, the agent asks
+before invoking it. For a new project, it also asks about missing settings such as
+architecture, approved commands and the planner's `high-reasoning` profile. Those are project decisions, not
+an activation procedure. Existing confirmed settings are reused. Spec, plan and final
+acceptance still require your approval.
 
 Then work conversationally:
 
-1. **Specify:** “Help me define a spec for password recovery, including failure cases.”
+1. **Request:** “Add password recovery.” The agent clarifies requirements and drafts a spec.
 2. **Review:** read the resulting `spec.md`, answer questions, and explicitly approve it.
 3. **Plan:** the planner compares approaches and prepares `plan.md` and `tasks.md`.
+   It asks blocking decisions immediately and waits; independent confirmations can
+   be grouped at the end of the draft. Your answers determine the design.
    Confirm the E2E decision and approve the design/task definitions.
 4. **Implement and verify:** developer and QA work within that scope. QA reports
-   evidence; failures return to developer through the orchestrator.
+   evidence and requests developer corrections through the orchestrator; each result
+   goes back to QA until required checks pass or an explicit blocker needs your decision.
 5. **Accept:** review the integrated result and verification report, then accept it.
-6. **Resume:** “Recover the current AHFORA work and show me pending tasks and blockers.”
-7. **Maintain:** “Investigate this bug, locate its spec, and propose a linked fix spec.”
+6. **Resume:** “Continue the pending work.” The agent recovers the relevant state.
+7. **Maintain:** “Fix this password recovery bug.” The agent locates the affected spec
+   and prepares the linked fix.
 
 The default correction budget is three rounds for the same underlying failure.
 Unresolved failures then require your decision. There are no mandatory slash commands.
@@ -125,11 +151,13 @@ your-project/
 └── .ahfora/
     ├── manifest.json                # Installed version and requested adapters
     ├── project.json                 # Model/test preferences; no credentials
+    ├── models.md                    # User-selected model gate for every subagent
     ├── workflow.md                  # Explicit lifecycle and approval gates
+    ├── spec-identity.md             # Short spec numbers and coordinated reservation
     ├── engram.md                    # Memory readiness and recovery protocol
     ├── agents/                      # Four canonical role contracts
     ├── templates/                   # Specs, plans, tasks, evidence, history, state
-    ├── state/                       # Shared progress/approvals; local/ is ignored
+    ├── state/                       # ID ledger, shared progress/approvals; local/ is ignored
     ├── improvements/                # Proposed, authorized and verified local changes
     ├── references.md
     └── LICENSE                      # Framework's MIT license; not your app's license
@@ -138,11 +166,14 @@ your-project/
 Selected adapters add `.claude/agents/`, `.opencode/agents/`, or `.gemini/agents/`.
 Claude also gets thin skill bridges and `CLAUDE.md`; Gemini gets `GEMINI.md`.
 The main instruction entry points direct the client to the canonical `AGENTS.md`.
+Native adapters enable file editing for their roles. Gemini also receives a project
+`settings.json` with `auto_edit`; existing settings are preserved. Each role must
+still stay within its assigned artifacts and the approved scope.
 
 Agents create each spec progressively:
 
 ```text
-specs/<unix-milliseconds>-<uuid-v4>-<short-name>/
+specs/0001-task-manager/
 ├── spec.md
 ├── plan.md
 ├── tasks.md
@@ -150,9 +181,18 @@ specs/<unix-milliseconds>-<uuid-v4>-<short-name>/
 └── history.md                       # Added/appended when completed work evolves
 ```
 
-IDs are generated using real time and a cryptographic UUID, rather than a shared
-incrementing counter. This supports independent branches; coordinating edits still
-requires task ownership and an integration owner.
+Spec IDs are short, sequential four-digit strings: **0001, 0002, 0003…**. The
+orchestrator reserves each number in `.ahfora/state/spec-ids.json`. Issued numbers
+are never reused; teams coordinate reservations before parallel branch work.
+
+Before asking requirements questions, the agent identifies what it is preparing:
+
+> I'm preparing **SPEC 0001 — Task manager**.
+> Destination: `specs/0001-task-manager/spec.md`.
+> Phase: requirements clarification.
+
+The same ID/title remains visible in question batches, handoffs and review requests.
+The conversation uses your language; spec documents remain in English.
 
 ## Roles and skills
 

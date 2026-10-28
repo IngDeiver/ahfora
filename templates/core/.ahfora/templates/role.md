@@ -11,6 +11,8 @@ differs from existing roles. Do not invent a role merely to add another approval
 - Required project context and skill paths: TODO
 - Required capabilities and confirmed model profile, if any: TODO
 - Missing input behavior: return needs-input or blocked to the orchestrator and stop
+- Missing capability behavior: report the actual error and a user-facing alternative;
+  do not silently switch executor or assume approval for main-agent substitution
 
 ## Procedure
 

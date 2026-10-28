@@ -3,7 +3,14 @@
   "language": "en",
   "architecture": { "status": "undecided", "reference": "docs/constitution.md" },
   "modelProfiles": {
+    "user-selected": { "claude": null, "opencode": null, "gemini": null, "generic": null },
     "high-reasoning": { "claude": null, "opencode": null, "gemini": null, "generic": null }
+  },
+  "roleModelProfiles": {
+    "spec-author": "user-selected",
+    "planner": "high-reasoning",
+    "developer": "user-selected",
+    "qa-engineer": "user-selected"
   },
   "testing": { "e2e": "ask-per-spec", "maxCorrectionRounds": 3 },
   "memory": { "provider": "engram", "required": true },

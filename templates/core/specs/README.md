@@ -1,7 +1,10 @@
 # Specifications
 
-Each feature, baseline, fix, or change gets `specs/<unix-ms>-<uuid>-<slug>/`.
-The orchestrator reserves the ID; the spec author starts with `spec.md` only.
+Each feature, baseline, fix, or change gets a short numbered folder such as
+`specs/0001-task-manager/`, followed by `0002-<slug>/` and so on. The orchestrator
+reserves the four-digit ID in `.ahfora/state/spec-ids.json` using
+[the identity protocol](../.ahfora/spec-identity.md); the spec author starts with
+`spec.md` only and tells the user which **SPEC 0001 — <title>** is being prepared.
 Planning adds `plan.md` and `tasks.md`; QA adds `verification.md`. Completed-spec
 amendments add or append `history.md` on the affected spec.
 

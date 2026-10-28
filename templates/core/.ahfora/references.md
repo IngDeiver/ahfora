@@ -14,6 +14,10 @@ vendor their agents, skills or implementation and is not affiliated with them.
 - [Skill integration](https://agentskills.io/integrate-skills): `.agents/skills/`
   interoperability convention; directory discovery remains client-dependent.
 - [AGENTS.md](https://agents.md/): portable project instructions for coding agents.
+- [Claude project instructions](https://code.claude.com/docs/en/memory),
+  [Gemini context imports](https://geminicli.com/docs/reference/memport/), and
+  [OpenCode project rules](https://opencode.ai/docs/rules/): automatic project context
+  loading. Native context imports connect Claude/Gemini entry points to `AGENTS.md`.
 - [Claude Code agents](https://code.claude.com/docs/en/sub-agents) and
   [skills](https://code.claude.com/docs/en/skills): native registration and discovery.
 - [OpenCode agents](https://opencode.ai/docs/agents/) and

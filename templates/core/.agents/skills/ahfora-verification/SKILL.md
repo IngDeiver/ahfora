@@ -39,7 +39,10 @@ the answer and tradeoffs. Tools/frameworks come from the project, not AHFORA.
 4. Run actual checks on the integrated revision, recording command, directory,
    environment, exit result and concise sanitized evidence.
 5. Report stable finding IDs with reproduction, expected/actual and severity.
-   Route fixes through the orchestrator to developer; reverify each correction.
+   Request `next_role: developer` through the orchestrator for implementation fixes,
+   with reproduction, allowed scope and checks to rerun. After each developer result,
+   the orchestrator invokes QA again. Reverify each correction on integrated code;
+   continue until required checks pass or a real blocker requires the user's decision.
 6. Follow the [correction budget](../../../.ahfora/workflow.md): three rounds for the
    same underlying failure by default, then stop and ask for a bounded next step.
 7. Recheck affected acceptance and regression criteria after changes. Invalidate

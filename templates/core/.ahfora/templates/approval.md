@@ -1,6 +1,6 @@
 # Approval record <uuid>
 
-- Spec ID: TODO
+- Spec ID (four-digit string) and title: TODO
 - Gate: spec | plan-and-tasks | final-acceptance | architecture | model-fallback
 - Decision: approved | rejected
 - User/decision owner: TODO (do not invent)

@@ -68,7 +68,15 @@ export async function planInstallation(destination, selected = []) {
   const root = resolve(destination);
   if (selected.some(client => !clients.includes(client))) throw new Error('Unknown client adapter.');
   const core = await readTemplates(join(packageRoot, 'templates', 'core'));
-  const files = new Map([...core, ...adapterFiles(selected)]);
+  const projectPath = '.ahfora/project.json';
+  await assertSafePath(root, projectPath);
+  let project = JSON.parse(core.get(projectPath));
+  if (await statIfExists(join(root, projectPath))) {
+    try { project = JSON.parse(await readFile(join(root, projectPath), 'utf8')); }
+    catch { throw new Error('Invalid .ahfora/project.json; repair it before installing.'); }
+    if (!project || typeof project !== 'object' || Array.isArray(project)) throw new Error('Project settings must be a JSON object.');
+  }
+  const files = new Map([...core, ...adapterFiles(selected, project)]);
   files.set('.ahfora/LICENSE', await readFile(join(packageRoot, 'LICENSE'), 'utf8'));
   if (selected.includes('claude')) for (const entry of claudeSkillBridges(core)) files.set(...entry);
   const manifestPath = '.ahfora/manifest.json';

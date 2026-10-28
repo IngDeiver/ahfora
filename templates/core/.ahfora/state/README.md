@@ -2,9 +2,11 @@
 
 The orchestrator creates records as work starts. This folder initially contains no
 active spec and no fabricated completed work.
+The allocation ledger starts at zero; `0001` is reserved only when real work begins.
 
 | Location | Responsibility | Version control |
 | --- | --- | --- |
+| `spec-ids.json` | Monotonic spec number reservations and legacy ID mappings | Shared |
 | `specs/<id>.json` | Canonical lifecycle, revision, owner, blockers and approval references | Shared |
 | `approvals/<id>/<approval-uuid>/` | Approval record and immutable copies of reviewed artifacts | Shared |
 | `handoffs/<handoff-uuid>.md` | Role assignment/result, ownership and dependencies | Shared |
@@ -31,8 +33,11 @@ if the project adds one, must be clearly marked as derived and rebuildable.
 One integration owner updates a spec's lifecycle/task progress at a time. Workers
 return updates to that owner. Use task-specific handoffs for disjoint parallel work.
 Read the lifecycle revision before editing, reconcile concurrent changes, and
-increment it. For independent branches, retain unique IDs and resolve shared-file
-conflicts through review; a timestamp does not prevent write conflicts.
+increment it. Reserve short spec numbers through the single authoritative ledger
+before parallel branch work; follow [spec identity](../spec-identity.md). Locks under
+`local/` coordinate only the same workspace, not independent branches or machines.
+Resolve shared-file conflicts through review. Never reuse cancelled/deleted IDs or
+silently renumber a spec to hide a collision.
 
 The protocol is cooperative, not a lock service. If a client cannot coordinate
 writers safely, serialize the work. Stale owners are reassigned only after confirming

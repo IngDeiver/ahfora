@@ -6,6 +6,21 @@ AHFORA is an instruction framework, not an execution engine. Follow this contrac
 using the capabilities of the current client. Never claim that a prompt enforces
 permissions, proves correctness, or guarantees identical model output.
 
+## Automatic activation
+
+These project instructions activate AHFORA automatically for development, bug-fix,
+maintenance and continuation requests. The user describes the desired outcome;
+they do not need to mention AHFORA, request a spec, select a role, or ask you to read
+this file. Never require an activation prompt or a separate bootstrap command.
+
+Before acting on that request, perform the readiness steps below and load
+`.agents/skills/ahfora-sdd/SKILL.md`. Use the original request as the workflow input:
+locate the relevant spec and phase, or start clarification with spec-author when
+new work is needed. Reuse confirmed project decisions and ask only for missing
+information or required approvals. Preserve the request across those questions;
+do not ask the user to repeat it after setup. Automatic activation does not grant
+approval to install dependencies, implement an unapproved plan, or change scope.
+
 ## Start here — every session and after context loss
 
 1. Read `docs/constitution.md`, `.ahfora/project.json`, and `.ahfora/workflow.md`.
@@ -19,6 +34,19 @@ permissions, proves correctness, or guarantees identical model output.
 5. Report the active phase, pending work, blockers, and next action briefly. On a
    first use, complete the bootstrap in `.ahfora/workflow.md` with the user.
 
+## Keep the active spec visible
+
+Use short spec IDs such as `0001`, allocated through `.ahfora/spec-identity.md`.
+Before delegating spec-author, tell the user **SPEC 0001 — <title>**, the destination
+`specs/0001-<slug>/spec.md` and current phase. Repeat the ID/title when asking a batch
+of questions, switching/resuming a spec, or requesting approval. Distinguish creating
+a new draft from continuing an existing one; never claim a file is written or approved
+before that actually happens. Use the user's language while retaining the exact ID/path.
+
+When native subagent messages are hidden, relay the returned `user_message` with
+its spec identity to the user. Do not leave progress only in tool output or silently
+ask product questions without identifying the spec they belong to.
+
 ## Canonical map
 
 | Concern | Location |
@@ -26,8 +54,12 @@ permissions, proves correctness, or guarantees identical model output.
 | Project principles, architecture, commands, constraints | `docs/constitution.md` |
 | Lifecycle, approvals, handoffs, completion | `.ahfora/workflow.md` |
 | Model profile and test preferences | `.ahfora/project.json` |
+| User-selected model resolution for every role | `.ahfora/models.md` |
+| Planner questions, timing and user decisions | `.ahfora/planning-dialogue.md` |
 | Engram readiness and memory protocol | `.ahfora/engram.md` |
 | Role contracts | `.ahfora/agents/` |
+| Short spec IDs and reservation rules | `.ahfora/spec-identity.md` |
+| Issued spec numbers and legacy ID mappings | `.ahfora/state/spec-ids.json` |
 | Portable skills | `.agents/skills/<name>/SKILL.md` |
 | Artifact templates | `.ahfora/templates/` |
 | Specifications, plans, tasks, verification | `specs/<id>-<slug>/` |
@@ -43,11 +75,44 @@ permissions, proves correctness, or guarantees identical model output.
 | `developer` | Plan and tasks are approved | Task-scoped implementation and evidence | Change requirements or approve its own final completion |
 | `qa-engineer` | Designing verification or verifying implementation | Tests and `verification.md` | Weaken acceptance criteria or silently fix production code |
 
-Native adapter names are `ahfora-<role>`. Read the canonical contract before each
-delegation. All delegation goes through you; subagents return questions and requests
-for another role. If native delegation is unavailable, announce **sequential role
-mode**, load one contract at a time, and record that validation was not performed
-in an independently isolated agent context. The same gates still apply.
+Native adapter names are `ahfora-<role>`. Delegation to the responsible subagent is
+mandatory when it is available: spec-author owns specifications, planner owns design
+and task definitions, developer owns implementation, and qa-engineer owns testing
+and verification. Coordinate and review their results; do not silently perform their
+work yourself for convenience or assign it to a different role. Read the canonical
+contract before every delegation. Subagents return questions and requests for another
+role to you; they do not invoke each other. Planner design questions can go directly
+to the user when the client supports it; otherwise relay them as described below.
+
+Follow `.ahfora/planning-dialogue.md`: the planner asks blocking decisions before
+dependent design and groups independent confirmations at the end of its draft.
+If it returns `needs-input`, show its questions/options faithfully, wait for the
+user and resume that planner with the actual answers. Do not choose on the user's
+behalf or take over the design. Preserve decision IDs and already-confirmed choices.
+
+Before invoking ANY subagent, resolve the user's selected model for that role using
+`.ahfora/models.md`, configure or confirm its native routing, and include the evidence
+in the handoff. If unknown, ask the user and wait before invoking it. Never guess a
+model, silently choose a different provider, or treat unverified inheritance as proof.
+
+Every role must have file write/edit capability for its assigned artifacts. Native
+adapters enable editing; role scope still determines which files it may change.
+Check the effective permissions before delegation. Do not impose a read-only agent
+mode on spec-author/planner merely because they do not write application code:
+they must be able to create and edit their Markdown deliverables.
+
+If the required subagent is missing, fails, lacks tools/permissions or cannot use
+its required model, report the affected **SPEC**, role, attempted action and concrete
+reason to the user. Offer a viable alternative using `.ahfora/workflow.md` section 5
+and obtain approval before changing executor or execution mode. Never silently fall
+back to main-agent work, including saving a draft after a denied subagent write.
+An existing explicit fallback approval may be reused only within its recorded scope;
+announce that choice and its limitations. Record actual versus intended execution.
+
+QA can request developer corrections with `next_role: developer`. Route valid
+in-scope requests automatically to developer, then invoke QA again on the integrated
+result. Continue until all required checks pass or a real blocker/budget requires a
+user decision; never replace QA re-verification with the developer's success claim.
 
 Use `.ahfora/templates/handoff.md` to provide the active spec ID/revision, approved
 scope, paths, ownership, decisions, model confirmation when required, memory context,

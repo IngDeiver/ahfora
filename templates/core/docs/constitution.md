@@ -69,9 +69,12 @@ with the owner before recording them as approved.
 
 ## Models and skills
 
-- Confirm `.ahfora/project.json` model profiles during bootstrap.
+- Confirm `.ahfora/project.json` model profiles and role mappings during bootstrap;
+  follow `.ahfora/models.md` before every subagent invocation.
 - Record the selected model per client, routing method, budget constraints and
-  approval. The planner requires `high-reasoning`; names are user-specific.
+  approval. Every role uses the user's choice; ask before invocation if unknown.
+  The planner's `high-reasoning` choice may match the other roles' `user-selected`
+  model. Native routing must reflect these selections; names are client-specific.
 - Additional project skills and when to use them: TODO
 
 ## Collaboration and maintenance

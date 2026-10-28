@@ -1,5 +1,5 @@
 ---
-id: "<unix-ms>-<uuid-v4>"
+id: "<four-digit-id>"
 title: "<capability or change>"
 kind: "feature"
 revision: 1
@@ -9,7 +9,7 @@ related_specs: []
 affected_paths: []
 ---
 
-# <Title>
+# SPEC <four-digit-id> — <Title>
 
 ## Problem and intended outcome
 

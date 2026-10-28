@@ -9,6 +9,7 @@
 | Task definitions and progress | Its `tasks.md` |
 | Actual validation evidence | Its `verification.md` |
 | Lifecycle, owner and gate references | `.ahfora/state/specs/<id>.json` |
+| Issued short spec numbers and old-ID mappings | `.ahfora/state/spec-ids.json` |
 | Reviewed baselines and user decisions | `.ahfora/state/approvals/` |
 | Architectural policy | `docs/constitution.md` |
 | Supporting context and learning | Engram |
@@ -21,7 +22,8 @@ shared by the AHFORA installer. Configure Engram's own sharing separately if des
 ## Evolving a completed spec
 
 1. Find the affected current contract and reproduce the problem.
-2. Create a new linked fix/change spec with a unique timestamp+UUID ID.
+2. Reserve the next four-digit ID in the shared ledger and create a linked fix/change
+   spec, such as `specs/0002-fix-task-edit/`. Keep the original spec's ID stable.
 3. Approve its behavior and plan, implement, and verify the integrated result.
 4. Apply the approved contract delta to the original spec when intended behavior
    changes. Preserve prior approval snapshots. Original plans/tasks remain history.
@@ -32,6 +34,21 @@ shared by the AHFORA installer. Configure Engram's own sharing separately if des
 
 During active changes, temporary drift must be explicit and cannot pass the completion
 gate. A user edit outside the process triggers reconciliation, not automatic overwrite.
+
+## Short IDs and older projects
+
+New specs use `0001` through `9999`, stored as strings. The ledger is coordinated by
+one allocation authority; separate branches must not independently issue the same
+next number. Cancelled or deleted numbers remain reserved. At `9999`, stop and agree
+on a namespace policy instead of wrapping the counter.
+
+Existing long IDs stay valid until an explicit migration is requested. A migration
+reserves a short ID, moves the active spec/state paths and updates active references,
+handoffs and checkpoints. Preserve approved snapshots and decisions, record the old
+ID in the reservation's `legacyIds`, and save the mapping to Engram. Unapproved drafts
+retain their approval status and get a revision update. Completed specs also receive
+an appended history entry. The installed `.ahfora/spec-identity.md` defines the full
+allocation and migration protocol. Reinstalling alone never renames user specs.
 
 ## Reinstalling and adding adapters
 

@@ -16,6 +16,11 @@ table; this skill does not define a competing state machine. Check Engram before
 starting. Use actual artifacts and recorded approvals, not conversational confidence,
 to determine the next phase. A completed checklist alone is not proof of behavior.
 
+Start automatically when the user asks for development, a fix or continuation.
+Do not require an AHFORA-specific prompt, a manual file-reading request or a command
+to bootstrap. Treat readiness checks as part of handling the user's original goal;
+ask about missing decisions and approvals, then resume without making them repeat it.
+
 Determinism here means explicit inputs, outputs, transitions and evidence. It does
 not mean identical model responses or an automatic proof that code matches prose.
 
@@ -26,10 +31,17 @@ not mean identical model responses or an automatic proof that code matches prose
    artifact revisions, code baseline, task ownership and outstanding questions.
 2. Check the current phase's preconditions. Missing Engram, approvals, model routing,
    required inputs or verification environment is a blocker, not a reason to skip.
-3. Select exactly the next responsible role. Provide the
+3. For new work, reserve a four-digit ID through the
+   [identity protocol](../../../.ahfora/spec-identity.md). Announce the actual
+   **SPEC 0001 — <title>**, destination path and phase before delegation; for existing
+   work announce its current identity. Relay subagent `user_message` when hidden.
+   Select exactly the next responsible role. Provide the
    [handoff contract](../../../.ahfora/templates/handoff.md), references and explicit
-   write scope. Use native delegation when supported; otherwise declare sequential
-   role mode and load the same canonical contract.
+   write scope. Delegate to that responsible native role whenever available. If it
+   cannot execute, use the workflow's required-role failure protocol: disclose the
+   actual blocker, propose a viable alternative, and obtain a scoped user decision
+   before substituting an executor or using sequential role mode. Never hide a failed
+   role behind main-agent work or claim that a native write/review happened when it did not.
 4. Assess the result's evidence against the exit criteria. `ready` means ready for
    the next gate, not approved. `needs-input` means ask the user and wait.
 5. Record user decisions with [approval records](../../../.ahfora/templates/approval.md)

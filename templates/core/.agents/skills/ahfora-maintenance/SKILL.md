@@ -30,7 +30,8 @@ change a requirement just to rationalize a code defect or weaken a failing test.
 1. Reproduce/inspect the issue and locate affected specs by requirement, interface
    and paths. Read histories, related changes and relevant Engram observations.
 2. Identify expected versus actual behavior and affected downstream contracts.
-3. Reserve a new unique fix/change spec ID. Reference original spec/revision and
+3. Reserve the next four-digit fix/change spec ID through the shared ledger and
+   [identity protocol](../../../.ahfora/spec-identity.md). Reference original spec/revision and
    affected requirement/scenario IDs; state the intended delta and regression scope.
 4. Follow the normal spec and plan approvals. Add implementation, verification and
    contract/history reconciliation tasks. Do not silently reopen completed work.

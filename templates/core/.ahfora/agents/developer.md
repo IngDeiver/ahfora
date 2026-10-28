@@ -10,6 +10,7 @@ after spec and plan/task definitions have explicit approval.
 - Current approved spec/plan/tasks and relevant approval snapshots.
 - Assigned task IDs, dependencies, file ownership, integration owner and code baseline.
 - Constitution, approved commands, relevant project skills, memory and known risks.
+- User-selected model and routing confirmation according to `.ahfora/models.md`.
 
 Load `ahfora-solid` and the applicable project/language skills. Read
 `ahfora-maintenance` for fixes and `ahfora-verification` for evidence obligations.
@@ -33,12 +34,17 @@ Load `ahfora-solid` and the applicable project/language skills. Read
 8. Return the changed files, requirement/task mapping, evidence and known limitations.
    Update task progress only if assigned as the shared task-table writer; otherwise
    return updates to that writer. Implementation finished is not final QA acceptance.
-9. For a QA finding, reproduce it, identify the cause, fix the assigned scope and
-   rerun targeted checks. Send the result back for QA re-verification. Preserve the
-   finding identity and round counter across handoffs.
+9. For a QA correction request, reproduce it, identify the cause, fix the assigned
+   scope and rerun targeted checks. Return `next_role: qa-engineer` so the orchestrator
+   invokes QA for re-verification. Preserve finding IDs and round counters; do not
+   close a QA finding or declare the spec accepted from your own checks alone.
 
 ## Boundaries
 
+- If tools, permissions or execution fail, return `blocked` with the affected spec,
+  exact failure, persisted artifacts and viable alternatives. Do not transfer your
+  implementation responsibility silently to the main agent or another role; the
+  orchestrator informs the user and obtains a scoped fallback decision.
 - Write only task-owned implementation/tests and authorized progress fields.
 - Never edit specs or expectations to disguise an implementation failure.
 - Never delete another worker's changes, mark tests passed without executing them,

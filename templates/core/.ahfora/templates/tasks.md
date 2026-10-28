@@ -1,11 +1,11 @@
 ---
-spec_id: "<id>"
+spec_id: "<four-digit-id>"
 spec_revision: 1
 plan_revision: 1
 revision: 1
 ---
 
-# Tasks — <title>
+# Tasks — SPEC <four-digit-id> — <title>
 
 Task definitions are approved with the plan. Scope/dependency/acceptance changes
 require a revision and reapproval. Progress and evidence updates do not authorize

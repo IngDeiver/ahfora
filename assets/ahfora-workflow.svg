@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1120" viewBox="0 0 1280 1120" fill="#f8fafc" role="img" aria-labelledby="title description">
+  <title id="title">How AHFORA works: orchestrator, specialist agents and persistent context</title>
+  <desc id="description">The user describes a goal to their main AI agent. That orchestrator reads and updates Engram memory and project context, checks models and permissions, and delegates four stages: spec author, planner, developer and QA engineer. The user approves the spec and plan and accepts the verified result. QA failures return through the orchestrator to developer and then back to QA. Specialists use skills, while specs and project state retain the work and decisions.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101827"/>
+      <stop offset="1" stop-color="#111e32"/>
+    </linearGradient>
+    <linearGradient id="hub" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#143b46"/>
+      <stop offset="1" stop-color="#17324d"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1 8 5 1 9" fill="none" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="memory-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 8 5 1 9" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text { font-family: Inter, "Segoe UI", Arial, sans-serif; }
+      .muted { fill: #cbd5e1; }
+      .body { font-size: 20px; }
+      .small { font-size: 18px; }
+      .code { font-family: Consolas, "Liberation Mono", monospace; font-size: 18px; fill: #99f6e4; }
+      .role { font-size: 25px; font-weight: 700; }
+      .gate { font-size: 18px; font-weight: 600; fill: #fbbf24; }
+      .flow { fill: none; stroke: #60a5fa; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="1120" rx="28" fill="url(#background)"/>
+  <text x="40" y="49" font-size="17" font-weight="700" letter-spacing="2" fill="#2dd4bf">AHFORA · SPEC-DRIVEN DEVELOPMENT</text>
+  <text x="40" y="99" font-size="44" font-weight="750">How AHFORA works</text>
+  <text x="42" y="134" font-size="22" class="muted">You describe the goal. Your AI coordinates the development workflow.</text>
+  <path d="M1153 113 1184 51a8 8 0 0 1 14 0l31 62M1169 84h43" fill="none" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1169" cy="84" r="5" fill="#60a5fa"/>
+  <circle cx="1212" cy="84" r="5" fill="#60a5fa"/>
+
+  <!-- The human remains the decision owner. -->
+  <rect x="440" y="175" width="400" height="90" rx="18" fill="#1c2c45" stroke="#60a5fa" stroke-width="2"/>
+  <text x="640" y="210" text-anchor="middle" font-size="27" font-weight="700">You</text>
+  <text x="640" y="242" text-anchor="middle" class="body muted">Describe a feature, bug or change</text>
+  <path class="flow" d="M640 268V315" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="663" y="297" class="small muted">requests + decisions</text>
+
+  <!-- Context is shared through the orchestrator, not separate competing task stores. -->
+  <rect x="40" y="330" width="290" height="130" rx="18" fill="#142a32" stroke="#27665f" stroke-width="2"/>
+  <text x="62" y="368" font-size="27" font-weight="700" fill="#5eead4">Engram</text>
+  <text x="62" y="396" class="body muted">Persistent memory</text>
+  <text x="62" y="423" class="small muted">Recall decisions</text>
+  <text x="62" y="447" class="small muted">Save useful learning</text>
+
+  <rect x="385" y="320" width="510" height="150" rx="20" fill="url(#hub)" stroke="#2dd4bf" stroke-width="2.5"/>
+  <text x="640" y="359" text-anchor="middle" font-size="28" font-weight="750">Your AI · Main orchestrator</text>
+  <text x="640" y="392" text-anchor="middle" font-size="19" class="muted">Checks memory, state, model and permissions</text>
+  <text x="640" y="421" text-anchor="middle" font-size="19" class="muted">Delegates work and routes questions to you</text>
+  <text x="640" y="450" text-anchor="middle" font-size="19" class="muted">Tracks approvals, blockers and progress</text>
+
+  <rect x="950" y="330" width="290" height="130" rx="18" fill="#19263b" stroke="#354d70" stroke-width="2"/>
+  <text x="972" y="368" font-size="26" font-weight="700">Project context</text>
+  <text x="972" y="396" class="small muted">AGENTS.md + constitution</text>
+  <text x="972" y="423" class="code">.ahfora/state/</text>
+  <text x="972" y="447" class="small muted">Task progress + approvals</text>
+  <path d="M337 398H378" fill="none" stroke="#2dd4bf" stroke-width="2.5" marker-start="url(#memory-arrow)" marker-end="url(#memory-arrow)"/>
+  <path class="flow" d="M902 398H943" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+
+  <!-- Each specialist exchanges work/results with the main agent. -->
+  <text x="42" y="507" font-size="20" font-weight="600" fill="#cbd5e1">Delegated workflow · steps 1–4</text>
+  <text x="1238" y="507" text-anchor="end" class="small muted">Results return to the orchestrator</text>
+  <path class="flow" d="M640 476V538M180 538H1095" marker-start="url(#arrow)"/>
+  <path class="flow" d="M180 538V574" marker-end="url(#arrow)"/>
+  <path class="flow" d="M485 538V574" marker-end="url(#arrow)"/>
+  <path class="flow" d="M790 538V574" marker-end="url(#arrow)"/>
+  <path class="flow" d="M1095 538V574" marker-end="url(#arrow)"/>
+  <circle cx="640" cy="538" r="5" fill="#60a5fa"/>
+
+  <rect x="40" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="60" y="600" width="42" height="32" rx="9" fill="#174d49"/>
+  <text x="81" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#99f6e4">01</text>
+  <text x="115" y="625" class="role">Spec author</text>
+  <text x="60" y="674" class="body muted">Clarifies requirements</text>
+  <text x="60" y="704" class="body muted">Defines acceptance cases</text>
+  <rect x="60" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="180" y="748" text-anchor="middle" class="code">spec.md</text>
+  <text x="60" y="786" class="gate">YOU: approve the spec</text>
+
+  <rect x="345" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="365" y="600" width="42" height="32" rx="9" fill="#173f64"/>
+  <text x="386" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#bfdbfe">02</text>
+  <text x="420" y="625" class="role">Planner</text>
+  <text x="365" y="674" class="body muted">Discusses design choices</text>
+  <text x="365" y="704" class="body muted">Asks, waits, then plans</text>
+  <rect x="365" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="485" y="748" text-anchor="middle" class="code">plan.md + tasks.md</text>
+  <text x="365" y="786" class="gate">YOU: approve the plan</text>
+
+  <rect x="650" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="670" y="600" width="42" height="32" rx="9" fill="#37335b"/>
+  <text x="691" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#ddd6fe">03</text>
+  <text x="725" y="625" class="role">Developer</text>
+  <text x="670" y="674" class="body muted">Implements approved tasks</text>
+  <text x="670" y="704" class="body muted">Applies requested fixes</text>
+  <rect x="670" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="790" y="748" text-anchor="middle" class="code">Application code</text>
+  <text x="670" y="786" font-size="18" font-weight="600" fill="#93c5fd">Returns work for verification</text>
+
+  <rect x="955" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="975" y="600" width="42" height="32" rx="9" fill="#164739"/>
+  <text x="996" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#a7f3d0">04</text>
+  <text x="1030" y="625" class="role">QA engineer</text>
+  <text x="975" y="674" class="body muted">Creates and runs tests</text>
+  <text x="975" y="704" class="body muted">Verifies spec ↔ code</text>
+  <rect x="975" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="1095" y="748" text-anchor="middle" class="code">verification.md</text>
+  <text x="975" y="786" class="gate">PASS → your acceptance</text>
+
+  <text x="640" y="832" text-anchor="middle" font-size="19" class="muted">Each specialist loads the relevant skills and uses your selected model.</text>
+
+  <!-- A correction request always passes through the orchestrator. -->
+  <rect x="40" y="852" width="1200" height="108" rx="18" fill="#242735" stroke="#786135" stroke-width="1.5"/>
+  <text x="62" y="883" font-size="20" font-weight="600" fill="#fcd34d">If a required check fails, the orchestrator routes the correction:</text>
+  <rect x="60" y="900" width="245" height="40" rx="10" fill="#162338"/>
+  <text x="182" y="927" text-anchor="middle" font-size="21">QA findings</text>
+  <path class="flow" d="M313 920H357" marker-end="url(#arrow)"/>
+  <rect x="365" y="900" width="245" height="40" rx="10" fill="#173b48"/>
+  <text x="487" y="927" text-anchor="middle" font-size="21" font-weight="700">Main orchestrator</text>
+  <path class="flow" d="M618 920H662" marker-end="url(#arrow)"/>
+  <rect x="670" y="900" width="245" height="40" rx="10" fill="#162338"/>
+  <text x="792" y="927" text-anchor="middle" font-size="21">Developer fixes</text>
+  <path class="flow" d="M923 920H967" marker-end="url(#arrow)"/>
+  <rect x="975" y="900" width="245" height="40" rx="10" fill="#162338"/>
+  <text x="1097" y="927" text-anchor="middle" font-size="21">QA rechecks</text>
+  <text x="62" y="989" font-size="19" class="muted">Repeat within approved scope. Unresolved failures stay blocked; they are never marked as passed.</text>
+
+  <rect x="40" y="1015" width="1200" height="73" rx="16" fill="#111c2d" stroke="#2d435b" stroke-width="1.5"/>
+  <text x="62" y="1044" font-size="21" font-weight="700" fill="#5eead4">Project record</text>
+  <text x="62" y="1070" font-size="17" class="muted">Traceable + resumable</text>
+  <text x="330" y="1043" class="code">specs/0001-feature/ · spec.md · plan.md · tasks.md</text>
+  <text x="330" y="1070" class="code">verification.md · history.md · recorded user decisions</text>
+</svg>

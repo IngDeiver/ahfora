@@ -1,33 +1,76 @@
 export const clients = ['claude', 'opencode', 'gemini'];
 
 const roles = {
-  'spec-author': 'Clarifies requirements and writes an unambiguous, testable specification. Use for discovery, new specs, and requirement changes.',
-  planner: 'Designs an approved specification and writes its plan and tasks. Requires an explicitly confirmed high-reasoning model.',
+  'spec-author': 'Announces the assigned SPEC number and title, clarifies requirements, and writes a testable specification. Use for discovery, new specs, and requirement changes.',
+  planner: 'Discusses design decisions with the user, waits for needed answers, and writes the approved specification\'s plan and tasks using the confirmed high-reasoning model.',
   developer: 'Implements approved tasks within their declared file ownership and returns evidence or blockers.',
   'qa-engineer': 'Creates and executes requirement-driven tests and reports independent verification evidence and reproducible failures.',
 };
 
-export function adapterFiles(selected) {
+const defaultProfiles = {
+  'spec-author': 'user-selected',
+  planner: 'high-reasoning',
+  developer: 'user-selected',
+  'qa-engineer': 'user-selected',
+};
+
+function selectedModel(project, client, role) {
+  const profile = project.roleModelProfiles?.[role] ?? defaultProfiles[role];
+  if (typeof profile !== 'string' || !profile.trim()) throw new Error(`Invalid model profile for ${role}.`);
+  const model = project.modelProfiles?.[profile]?.[client];
+  if (model === null || model === undefined) return null;
+  if (typeof model !== 'string' || !model.trim() || model !== model.trim() || /[\x00-\x1f\x7f]/.test(model)) {
+    throw new Error(`Invalid model selection for ${client}/${role}; use a model identifier or null.`);
+  }
+  if (['user-selected', 'high-reasoning', 'inherit'].includes(model)) {
+    throw new Error(`Store the actual selected model for ${client}/${role}, not the profile or inheritance label.`);
+  }
+  return model;
+}
+
+export function adapterFiles(selected, project = {}) {
   const files = new Map();
   for (const client of selected) {
     for (const [role, description] of Object.entries(roles)) {
       const name = `ahfora-${role}`;
       const fields = [`name: ${name}`, `description: ${JSON.stringify(description)}`];
+      const model = selectedModel(project, client, role);
+      if (model) fields.push(`model: ${JSON.stringify(model)}`);
       if (client === 'opencode') {
-        fields.push('mode: subagent', 'permission:', '  task: deny');
+        fields.push('mode: subagent', 'permission:', '  task: deny', '  edit: allow');
         if (role === 'spec-author' || role === 'planner') {
-          fields.push('  edit:', '    "*": deny', '    "specs/**": allow', '  bash: ask');
+          fields.push('  bash: ask');
         }
+        if (role === 'planner') fields.push('  question: allow');
       }
-      if (client === 'claude') fields.push('disallowedTools: Agent');
+      if (client === 'claude') fields.push('disallowedTools: Agent', 'permissionMode: acceptEdits');
       if (client === 'gemini') fields.push('kind: local', 'max_turns: 40');
-      files.set(`.${client}/agents/${name}.md`, `---\n${fields.join('\n')}\n---\n\n# AHFORA ${role}\n\nRead these files from the project root before acting:\n\n1. \`AGENTS.md\` and \`docs/constitution.md\`.\n2. \`.ahfora/workflow.md\` and \`.ahfora/agents/${role}.md\`.\n3. The assigned spec artifacts and the skills required by that role.\n\nThe canonical role contract is mandatory. Return blocked if any required file is unavailable. Resolve canonical skill resources relative to their original skill directory, not this adapter.\n\nOnly the main orchestrator delegates other roles or asks the user for approvals. Return questions and handoff requests to it. Do not spawn nested subagents. Do not assume access to the parent's conversation or Engram tools.\n\n${role === 'planner' ? 'MODEL GATE: before planning, require a delegation record confirming the actual model against the project high-reasoning profile. An omitted model field inherits the client default; it does NOT prove the profile is satisfied. Return blocked if confirmation is missing.\n' : ''}`);
+      files.set(`.${client}/agents/${name}.md`, `---
+${fields.join('\n')}
+---
+
+# AHFORA ${role}
+
+Read these files from the project root before acting:
+
+1. \`AGENTS.md\` and \`docs/constitution.md\`.
+2. \`.ahfora/workflow.md\`, \`.ahfora/models.md\` and \`.ahfora/agents/${role}.md\`.
+3. The assigned spec artifacts and the skills required by that role.
+
+The canonical role contract is mandatory. Return blocked if any required file is unavailable. Resolve canonical skill resources relative to their original skill directory, not this adapter.
+
+${role === 'planner' ? 'Only the main orchestrator delegates other roles and records user approvals. Ask design questions directly when a supported user-question tool is available; otherwise return needs-input with the exact questions for the orchestrator to relay. Follow `.ahfora/planning-dialogue.md` and wait for the user before continuing.' : 'Only the main orchestrator delegates other roles or asks the user for approvals. Return questions and handoff requests to it.'} Do not spawn nested subagents. Do not assume access to the parent's conversation or Engram tools.
+
+MODEL GATE: before doing this role's work, require a handoff confirming the user's selected model and effective routing for this role. Follow \`.ahfora/models.md\`. An omitted model field or inheritance label is not proof of the user's choice. If confirmation is missing, return needs-input so the orchestrator asks the user before work proceeds. Never silently choose another model.
+${role === 'planner' ? '\nThe planner uses the user-confirmed high-reasoning profile, which may be the same model as other roles.\n' : ''}${role === 'qa-engineer' ? '\nFor a reproducible implementation failure, return next_role: developer with a correction request. The orchestrator dispatches developer and then returns the integrated result to you for re-verification.\n' : ''}`);
     }
-    if (client === 'claude') {
-      files.set('CLAUDE.md', '<!-- ahfora:begin -->\n# AHFORA entry point\n\nRead and follow `AGENTS.md` in this project root before any project work. It is the canonical orchestration contract. Read referenced files using your file tools.\n<!-- ahfora:end -->\n');
+    if (client === 'claude' || client === 'gemini') {
+      const file = client === 'claude' ? 'CLAUDE.md' : 'GEMINI.md';
+      const imported = client === 'claude' ? '@AGENTS.md' : '@./AGENTS.md';
+      files.set(file, `<!-- ahfora:begin -->\n# AHFORA project instructions\n\n${imported}\n\nApply the imported orchestration contract automatically when the user requests development, a fix or continuation. Do not ask the user to activate AHFORA, name a role, or request that you read instructions. Perform readiness checks and ask only for missing decisions and required approvals. If the import was not resolved, read \`AGENTS.md\` from this project root yourself before acting; stop if it is unavailable.\n<!-- ahfora:end -->\n`);
     }
     if (client === 'gemini') {
-      files.set('GEMINI.md', '<!-- ahfora:begin -->\n# AHFORA entry point\n\nRead and follow `AGENTS.md` in this project root before any project work. It is the canonical orchestration contract. Read referenced files using your file tools.\n<!-- ahfora:end -->\n');
+      files.set('.gemini/settings.json', `${JSON.stringify({ general: { defaultApprovalMode: 'auto_edit' } }, null, 2)}\n`);
     }
   }
   return files;

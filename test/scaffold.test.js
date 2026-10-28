@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, readFile, writeFile, mkdir, rm, readdir, symlink, link } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { scaffold, planInstallation } from '../src/scaffold.js';
 
 async function workspace(t) {
@@ -76,13 +76,48 @@ test('all native adapters reference canonical contracts and guard planner routin
       assert.match(adapter, new RegExp(`\\.ahfora/agents/${role}\\.md`));
       assert.match(adapter, /Do not spawn nested subagents/);
       assert.doesNotMatch(adapter, /^model: /m);
-      if (role === 'planner') assert.match(adapter, /MODEL GATE/);
+      assert.match(adapter, /MODEL GATE/);
+      if (client === 'opencode') {
+        assert.match(adapter, /^  edit: allow$/m);
+        assert.doesNotMatch(adapter, /edit:\s+deny|"\*": deny|"specs\/\*\*": allow/);
+        if (role === 'planner') assert.match(adapter, /^  question: allow$/m);
+      }
+      if (role === 'planner') assert.match(adapter, /\.ahfora\/planning-dialogue\.md/);
+      if (client === 'claude') assert.match(adapter, /^permissionMode: acceptEdits$/m);
     }
   }
   const bridge = await readFile(join(root, '.claude/skills/ahfora-sdd/SKILL.md'), 'utf8');
   assert.match(bridge, /\.agents\/skills\/ahfora-sdd\/SKILL\.md/);
   assert.match(bridge, /Return blocked if it cannot be read/);
-  assert.match(await readFile(join(root, '.opencode/agents/ahfora-spec-author.md'), 'utf8'), /"specs\/\*\*": allow/);
+  assert.equal(JSON.parse(await readFile(join(root, '.gemini/settings.json'), 'utf8')).general.defaultApprovalMode, 'auto_edit');
+});
+
+test('existing Gemini configuration is preserved rather than granting broader permissions silently', async t => {
+  const root = await workspace(t);
+  await mkdir(join(root, '.gemini'));
+  const settings = '{"general":{"defaultApprovalMode":"default"},"ui":{"vimMode":true}}\n';
+  await writeFile(join(root, '.gemini/settings.json'), settings);
+  const result = await scaffold(root, ['gemini']);
+  assert.equal(result.entries.find(entry => entry.path === '.gemini/settings.json').action, 'preserve');
+  assert.equal(await readFile(join(root, '.gemini/settings.json'), 'utf8'), settings);
+});
+
+test('native context imports resolve the canonical contract while preserving user instructions', async t => {
+  const root = await workspace(t);
+  for (const file of ['CLAUDE.md', 'GEMINI.md']) await writeFile(join(root, file), '# Existing project rules\n');
+  await scaffold(root, ['claude', 'opencode', 'gemini']);
+  await scaffold(root, ['claude', 'opencode', 'gemini']);
+  for (const file of ['CLAUDE.md', 'GEMINI.md']) {
+    const entryPoint = await readFile(join(root, file), 'utf8');
+    assert.ok(entryPoint.startsWith('# Existing project rules\n'));
+    const imports = [...entryPoint.matchAll(/^@([^\s]+)$/gm)];
+    assert.equal(imports.length, 1, `${file} must import the contract exactly once`);
+    const importedPath = resolve(dirname(join(root, file)), imports[0][1]);
+    assert.equal(importedPath, join(root, 'AGENTS.md'));
+    const contract = await readFile(importedPath, 'utf8');
+    assert.match(contract, /## Automatic activation/);
+    assert.match(contract, /## Start here/);
+  }
 });
 
 test('adding an adapter preserves existing choices and project configuration', async t => {
@@ -95,6 +130,65 @@ test('adding an adapter preserves existing choices and project configuration', a
   await scaffold(root, ['claude']);
   assert.deepEqual(JSON.parse(await readFile(join(root, '.ahfora/manifest.json'))).requestedAdapters, ['claude', 'opencode']);
   assert.equal(JSON.parse(await readFile(projectPath)).modelProfiles['high-reasoning'].opencode, 'provider/user-chosen-model');
+});
+
+test('reinstall preserves issued spec numbers, legacy aliases and user-authored specs', async t => {
+  const root = await workspace(t);
+  await scaffold(root);
+  const registryPath = join(root, '.ahfora/state/spec-ids.json');
+  assert.deepEqual(JSON.parse(await readFile(registryPath, 'utf8')), { schemaVersion: 1, lastIssued: 0, reservations: [] });
+  const registry = {
+    schemaVersion: 1,
+    lastIssued: 3,
+    reservations: [
+      { id: '0001', specPath: 'specs/0001-task-manager', reservedAt: '2026-10-28T00:00:00Z', reservedBy: 'test owner', legacyIds: ['previous-long-spec-id'] },
+      { id: '0003', specPath: 'specs/0003-retired-change', reservedAt: '2026-10-28T00:00:01Z', reservedBy: 'test owner', legacyIds: [] },
+    ],
+  };
+  const serialized = `${JSON.stringify(registry, null, 2)}\n`;
+  await writeFile(registryPath, serialized);
+  await mkdir(join(root, 'specs/0001-task-manager'));
+  const spec = '---\nid: "0001"\n---\n# User-authored requirements\n';
+  await writeFile(join(root, 'specs/0001-task-manager/spec.md'), spec);
+  const result = await scaffold(root, ['claude']);
+  assert.equal(result.entries.find(entry => entry.path === '.ahfora/state/spec-ids.json').action, 'preserve');
+  assert.equal(await readFile(registryPath, 'utf8'), serialized);
+  assert.equal(await readFile(join(root, 'specs/0001-task-manager/spec.md'), 'utf8'), spec);
+  assert.deepEqual((await readdir(join(root, 'specs'))).sort(), ['0001-task-manager', 'README.md']);
+});
+
+test('new native roles use user-selected per-client models and preserve later overrides', async t => {
+  const root = await workspace(t);
+  await mkdir(join(root, '.ahfora'));
+  const selected = { claude: 'claude-user-choice', opencode: 'provider/user-choice', gemini: 'gemini-user-choice' };
+  const project = { modelProfiles: { 'user-selected': selected, 'high-reasoning': { ...selected, opencode: 'provider/user-planner-choice' } } };
+  const configPath = join(root, '.ahfora/project.json');
+  await writeFile(configPath, JSON.stringify(project));
+  await scaffold(root, ['claude', 'opencode', 'gemini']);
+  for (const client of Object.keys(selected)) {
+    for (const role of ['spec-author', 'planner', 'developer', 'qa-engineer']) {
+      const content = await readFile(join(root, `.${client}/agents/ahfora-${role}.md`), 'utf8');
+      const actual = JSON.parse(content.match(/^model: (.+)$/m)[1]);
+      assert.equal(actual, client === 'opencode' && role === 'planner' ? 'provider/user-planner-choice' : selected[client]);
+    }
+  }
+  const path = join(root, '.opencode/agents/ahfora-developer.md');
+  const before = await readFile(path, 'utf8');
+  project.modelProfiles['user-selected'].opencode = 'provider/new-user-choice';
+  await writeFile(configPath, JSON.stringify(project));
+  const repeated = await scaffold(root, ['opencode']);
+  assert.equal(repeated.entries.find(entry => entry.path === '.opencode/agents/ahfora-developer.md').action, 'preserve');
+  assert.equal(await readFile(path, 'utf8'), before);
+});
+
+test('invalid model configuration fails before any framework files are generated', async t => {
+  const root = await workspace(t);
+  await mkdir(join(root, '.ahfora'));
+  for (const model of [123, 'bad\nmodel', 'inherit', 'high-reasoning']) {
+    await writeFile(join(root, '.ahfora/project.json'), JSON.stringify({ modelProfiles: { 'user-selected': { opencode: model } } }));
+    await assert.rejects(scaffold(root, ['opencode']), /model/i);
+    assert.deepEqual(await readdir(root), ['.ahfora']);
+  }
 });
 
 test('preflights conflicting file types before writing any framework files', async t => {

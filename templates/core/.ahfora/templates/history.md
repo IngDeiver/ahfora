@@ -6,7 +6,7 @@ from an agent executor; record model identity only when actually observable.
 
 ## <UTC ISO-8601> — <brief change>
 
-- Change/fix spec: <ID and relative path>
+- Change/fix spec: <four-digit ID, title and relative path>
 - Responsible human / approval reference: <confirmed identity and record>
 - Executor: <known actor or role; unknown if not observable>
 - What and why: <short factual summary>
