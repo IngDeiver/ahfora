@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="280" viewBox="0 0 1000 280" role="img" aria-labelledby="title desc">
+  <title id="title">AHFORA — Agnostic Harness for Agents</title>
+  <desc id="desc">A geometric turquoise A with connected nodes beside the AHFORA wordmark on midnight blue.</desc>
+  <rect width="1000" height="280" rx="28" fill="#101827"/>
+  <path d="M62 213 143 59a18 18 0 0 1 32 0l81 154" fill="none" stroke="#2dd4bf" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M99 151h119M159 151v62" fill="none" stroke="#60a5fa" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="99" cy="151" r="11" fill="#2dd4bf"/>
+  <circle cx="218" cy="151" r="11" fill="#2dd4bf"/>
+  <circle cx="159" cy="213" r="11" fill="#60a5fa"/>
+  <text x="307" y="146" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="79" font-weight="750" letter-spacing="8">AHFORA</text>
+  <text x="312" y="185" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" letter-spacing="1.2">AGNOSTIC HARNESS FOR AGENTS</text>
+  <text x="313" y="221" fill="#2dd4bf" font-family="Consolas, monospace" font-size="15" letter-spacing="2.5">SPEC / PLAN / BUILD / VERIFY</text>
+</svg>

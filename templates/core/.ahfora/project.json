@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "language": "en",
+  "architecture": { "status": "undecided", "reference": "docs/constitution.md" },
+  "modelProfiles": {
+    "high-reasoning": { "claude": null, "opencode": null, "gemini": null, "generic": null }
+  },
+  "testing": { "e2e": "ask-per-spec", "maxCorrectionRounds": 3 },
+  "memory": { "provider": "engram", "required": true },
+  "improvements": { "scope": "project", "approvalRequired": true }
+}

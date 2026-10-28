@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">AHFORA mark</title>
+  <desc id="desc">An open geometric A connects three workflow nodes.</desc>
+  <rect width="256" height="256" rx="52" fill="#101827"/>
+  <path d="M45 204 113 60a17 17 0 0 1 30 0l68 144" fill="none" stroke="#2dd4bf" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M78 145h100M128 145v58" fill="none" stroke="#60a5fa" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="78" cy="145" r="10" fill="#2dd4bf"/><circle cx="178" cy="145" r="10" fill="#2dd4bf"/><circle cx="128" cy="203" r="10" fill="#60a5fa"/>
+</svg>

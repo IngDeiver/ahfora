@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "specId": "<id>",
+  "specPath": "specs/<id>-<slug>",
+  "revision": 1,
+  "phase": "specifying",
+  "resumePhase": null,
+  "owner": "<confirmed integration owner>",
+  "updatedAt": "<UTC ISO-8601>",
+  "blockers": [],
+  "approvals": { "spec": null, "planAndTasks": null, "finalAcceptance": null },
+  "nextAction": "Clarify requirements and draft spec.md"
+}

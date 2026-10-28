@@ -1,0 +1,3 @@
+# AHFORA transient files (shared specs/state remain versionable)
+/.ahfora/state/local/
+/.ahfora-install.lock/

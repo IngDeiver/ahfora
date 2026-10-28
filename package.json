@@ -1,0 +1,21 @@
+{
+  "name": "ahfora",
+  "version": "0.1.0",
+  "description": "Agnostic Harness for Agents: a portable spec-driven development framework for AI coding agents.",
+  "type": "module",
+  "bin": { "ahfora": "bin/ahfora.js" },
+  "engines": { "node": ">=22" },
+  "files": ["bin/", "src/", "templates/", "assets/", "docs/", "CONTRIBUTING.md", "CHANGELOG.md"],
+  "scripts": {
+    "test": "node --test",
+    "check:package": "npm pack --dry-run --ignore-scripts",
+    "prepublishOnly": "npm test"
+  },
+  "author": "Deiver (https://github.com/IngDeiver)",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/IngDeiver/ahfora.git" },
+  "bugs": { "url": "https://github.com/IngDeiver/ahfora/issues" },
+  "homepage": "https://github.com/IngDeiver/ahfora#readme",
+  "keywords": ["ai", "agents", "sdd", "spec-driven-development", "claude", "opencode", "gemini", "engram"],
+  "publishConfig": { "access": "public" }
+}

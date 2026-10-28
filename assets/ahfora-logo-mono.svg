@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="280" viewBox="0 0 1000 280" role="img" aria-labelledby="title desc">
+  <title id="title">AHFORA — monochrome wordmark</title>
+  <desc id="desc">The AHFORA A mark and wordmark in one color on a transparent background.</desc>
+  <g fill="none" stroke="#101827" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M62 213 143 59a18 18 0 0 1 32 0l81 154" stroke-width="16"/>
+    <path d="M99 151h119M159 151v62" stroke-width="9"/>
+  </g>
+  <g fill="#101827">
+    <circle cx="99" cy="151" r="11"/><circle cx="218" cy="151" r="11"/><circle cx="159" cy="213" r="11"/>
+    <text x="307" y="146" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="79" font-weight="750" letter-spacing="8">AHFORA</text>
+    <text x="312" y="185" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" letter-spacing="1.2">AGNOSTIC HARNESS FOR AGENTS</text>
+  </g>
+</svg>
