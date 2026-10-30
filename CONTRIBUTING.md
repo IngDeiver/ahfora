@@ -28,7 +28,7 @@ To exercise the packaged executable before publication:
 
 ```sh
 npm pack --ignore-scripts
-npm exec --offline --yes --package ./ahfora-0.1.0.tgz -- ahfora init ../my-project --clients all
+npm exec --offline --yes --package ./ahfora-0.1.1.tgz -- ahfora init ../my-project --clients all
 ```
 
 Replace the version when testing a newer release. The second command uses npm's

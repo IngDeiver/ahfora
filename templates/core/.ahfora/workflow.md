@@ -21,12 +21,19 @@ never require the user to activate AHFORA or name the next role.
 4. For an existing codebase, inspect entry points, modules, tests, dependencies and
    conventions. Present observed behavior separately from intended behavior. Ask
    what must be retained; a baseline spec does not legitimize an observed defect.
-5. Ask the owner about purpose, scale, constraints and architecture. Offer practical
+5. Confirm the application source location using the first-use question in `AGENTS.md`.
+   Ask for the owner's folder/path choice or confirmation of the existing layout,
+   then STOP and wait. Do not assume `src`, `bin`, the project root or a toolchain
+   default. Record approved roots, purposes and the decision reference in the
+   constitution's Application layout section and Engram; reuse an already confirmed
+   answer. If the stack is undecided, keep paths pending and resolve this choice
+   before dependent planning, project-generator commands or application code writes.
+6. Ask the owner about purpose, scale, constraints and architecture. Offer practical
    alternatives with complexity, maintenance and operational tradeoffs. Record the
    approved choice in the constitution and Engram. Simplicity is a valid choice.
-6. Confirm verification commands and testing environments. Do not invent commands
+7. Confirm verification commands and testing environments. Do not invent commands
    from the framework. Unknown commands stay unresolved until confirmed.
-7. Resolve the user's chosen model for EVERY role using `.ahfora/models.md` and
+8. Resolve the user's chosen model for EVERY role using `.ahfora/models.md` and
    `.ahfora/project.json`. Reuse a confirmed explicit/session selection; if it is
    unknown, ask before invoking the subagent. Configure native per-role routing
    and confirm the effective model. Planner uses a user-confirmed `high-reasoning`

@@ -12,6 +12,7 @@
 - Assigned tasks, dependencies and write scope: TODO
 - Owner, shared-artifact writer and integration owner: TODO
 - Relevant constitution decisions and confirmed commands: TODO
+- Confirmed application source roots and Application layout decision reference: TODO
 - Required skill paths: TODO
 - Relevant memory observations / concise context: TODO
 - Requested user-selected model and profile (required for every role): TODO

@@ -8,6 +8,11 @@ is **not-run**, not passed. Use a disposable project and avoid real credentials/
 | Scenario | Setup / request | Expected behavior |
 | --- | --- | --- |
 | Automatic activation | Open an installed project and ask only "Build a task manager" | Load AHFORA from project instructions, run readiness checks and start clarification without requesting an activation prompt |
+| First-use source location | Start a new project without a confirmed application layout | Ask where the user wants application code, explain stack-specific conventions and wait; do not choose paths or run a project generator using an assumed default |
+| Custom or multiple source roots | Answer with a custom folder, project root or separate application/package paths | Record the exact approved relative roots and purposes in the constitution and Engram; pass them to roles and use them in plan/tasks and code writes |
+| Existing source layout | Provide an existing codebase with source directories but no recorded layout approval | Show the discovered roots and ask whether to retain them; do not relocate code or create a competing source folder |
+| Confirmed source layout on resume | Resume with an explicit approved Application layout decision | Reuse the recorded roots without asking again; require confirmation before changing them |
+| Unresolved source layout | Leave the stack undecided, or choose a path incompatible with a verified toolchain constraint | Keep the location pending, explain the missing context or constraint and ask for a compatible choice before dependent path decisions or scaffolding |
 | Native context imports | Open with the Claude or Gemini adapter installed | Include canonical AGENTS.md through the native context import; do not wait for a manual file-reading request |
 | Visible spec identity | Request a new feature and reach requirements clarification | Announce the reserved four-digit ID, title, destination and phase before questions; repeat ID/title in later batches |
 | Hidden subagent output | Use a client that hides the spec-author conversation | Main orchestrator relays `user_message` with spec identity; the user does not need to inspect tool output |

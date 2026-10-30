@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1120" viewBox="0 0 1280 1120" fill="#f8fafc" role="img" aria-labelledby="title description">
+  <title id="title">Cómo funciona AHFORA: orquestación, agentes especialistas y contexto persistente</title>
+  <desc id="description">La persona describe un objetivo a su agente principal de IA. El orquestador consulta y actualiza Engram y el contexto del proyecto, comprueba modelos y permisos y delega cuatro etapas: especificación, planificación, desarrollo y verificación. La persona aprueba la especificación y el plan y acepta el resultado verificado. Los fallos vuelven al desarrollo a través del orquestador y se verifican de nuevo. Las especificaciones, el estado y la memoria conservan las decisiones y el progreso.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101827"/>
+      <stop offset="1" stop-color="#111e32"/>
+    </linearGradient>
+    <linearGradient id="hub" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#143b46"/>
+      <stop offset="1" stop-color="#17324d"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1 8 5 1 9" fill="none" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="memory-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 8 5 1 9" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text { font-family: Inter, "Segoe UI", Arial, sans-serif; }
+      .muted { fill: #cbd5e1; }
+      .body { font-size: 20px; }
+      .small { font-size: 18px; }
+      .code { font-family: Consolas, "Liberation Mono", monospace; font-size: 18px; fill: #99f6e4; }
+      .role { font-size: 23px; font-weight: 700; }
+      .gate { font-size: 18px; font-weight: 600; fill: #fbbf24; }
+      .flow { fill: none; stroke: #60a5fa; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="1120" rx="28" fill="url(#background)"/>
+  <text x="40" y="49" font-size="17" font-weight="700" letter-spacing="2" fill="#2dd4bf">AHFORA · DESARROLLO GUIADO POR ESPECIFICACIONES</text>
+  <text x="40" y="99" font-size="44" font-weight="750">Cómo funciona AHFORA</text>
+  <text x="42" y="134" font-size="22" class="muted">Tú defines el objetivo. Tu IA coordina el desarrollo.</text>
+  <path d="M1153 113 1184 51a8 8 0 0 1 14 0l31 62M1169 84h43" fill="none" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1169" cy="84" r="5" fill="#60a5fa"/>
+  <circle cx="1212" cy="84" r="5" fill="#60a5fa"/>
+
+  <rect x="440" y="175" width="400" height="90" rx="18" fill="#1c2c45" stroke="#60a5fa" stroke-width="2"/>
+  <text x="640" y="210" text-anchor="middle" font-size="27" font-weight="700">Tú decides</text>
+  <text x="640" y="242" text-anchor="middle" class="body muted">Describe una función, fallo o cambio</text>
+  <path class="flow" d="M640 268V315" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="663" y="297" class="small muted">solicitudes + decisiones</text>
+
+  <rect x="40" y="330" width="290" height="130" rx="18" fill="#142a32" stroke="#27665f" stroke-width="2"/>
+  <text x="62" y="368" font-size="27" font-weight="700" fill="#5eead4">Engram</text>
+  <text x="62" y="396" class="body muted">Memoria persistente</text>
+  <text x="62" y="423" class="small muted">Recupera decisiones</text>
+  <text x="62" y="447" class="small muted">Conserva aprendizajes</text>
+
+  <rect x="385" y="320" width="510" height="150" rx="20" fill="url(#hub)" stroke="#2dd4bf" stroke-width="2.5"/>
+  <text x="640" y="359" text-anchor="middle" font-size="28" font-weight="750">Tu IA · Orquestador principal</text>
+  <text x="640" y="392" text-anchor="middle" font-size="19" class="muted">Revisa memoria, estado, modelo y permisos</text>
+  <text x="640" y="421" text-anchor="middle" font-size="19" class="muted">Delega tareas y te consulta las decisiones</text>
+  <text x="640" y="450" text-anchor="middle" font-size="19" class="muted">Registra aprobaciones, bloqueos y avances</text>
+
+  <rect x="950" y="330" width="290" height="130" rx="18" fill="#19263b" stroke="#354d70" stroke-width="2"/>
+  <text x="972" y="368" font-size="24" font-weight="700">Contexto del proyecto</text>
+  <text x="972" y="396" class="small muted">Instrucciones + constitución</text>
+  <text x="972" y="423" class="code">.ahfora/state/</text>
+  <text x="972" y="447" class="small muted">Avances + aprobaciones</text>
+  <path d="M337 398H378" fill="none" stroke="#2dd4bf" stroke-width="2.5" marker-start="url(#memory-arrow)" marker-end="url(#memory-arrow)"/>
+  <path class="flow" d="M902 398H943" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+
+  <text x="42" y="507" font-size="20" font-weight="600" fill="#cbd5e1">Trabajo delegado · etapas 1–4</text>
+  <text x="1238" y="507" text-anchor="end" class="small muted">Los resultados vuelven al orquestador</text>
+  <path class="flow" d="M640 476V538M180 538H1095" marker-start="url(#arrow)"/>
+  <path class="flow" d="M180 538V574" marker-end="url(#arrow)"/>
+  <path class="flow" d="M485 538V574" marker-end="url(#arrow)"/>
+  <path class="flow" d="M790 538V574" marker-end="url(#arrow)"/>
+  <path class="flow" d="M1095 538V574" marker-end="url(#arrow)"/>
+  <circle cx="640" cy="538" r="5" fill="#60a5fa"/>
+
+  <rect x="40" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="60" y="600" width="42" height="32" rx="9" fill="#174d49"/>
+  <text x="81" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#99f6e4">01</text>
+  <text x="115" y="625" class="role">Especificación</text>
+  <text x="60" y="674" class="body muted">Aclara requisitos</text>
+  <text x="60" y="704" class="body muted">Criterios de aceptación</text>
+  <rect x="60" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="180" y="748" text-anchor="middle" class="code">spec.md</text>
+  <text x="60" y="786" class="gate">TÚ apruebas los requisitos</text>
+
+  <rect x="345" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="365" y="600" width="42" height="32" rx="9" fill="#173f64"/>
+  <text x="386" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#bfdbfe">02</text>
+  <text x="420" y="625" class="role">Planificación</text>
+  <text x="365" y="674" class="body muted">Propone y explica diseños</text>
+  <text x="365" y="704" class="body muted">Pregunta, espera y planea</text>
+  <rect x="365" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="485" y="748" text-anchor="middle" class="code">plan.md + tasks.md</text>
+  <text x="365" y="786" class="gate">TÚ apruebas el plan</text>
+
+  <rect x="650" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="670" y="600" width="42" height="32" rx="9" fill="#37335b"/>
+  <text x="691" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#ddd6fe">03</text>
+  <text x="725" y="625" class="role">Desarrollo</text>
+  <text x="670" y="674" class="body muted">Implementa lo aprobado</text>
+  <text x="670" y="704" class="body muted">Aplica las correcciones</text>
+  <rect x="670" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="790" y="748" text-anchor="middle" class="code">Código de la aplicación</text>
+  <text x="670" y="786" font-size="18" font-weight="600" fill="#93c5fd">Entrega para verificación</text>
+
+  <rect x="955" y="580" width="280" height="224" rx="18" fill="#162338" stroke="#31455f" stroke-width="1.5"/>
+  <rect x="975" y="600" width="42" height="32" rx="9" fill="#164739"/>
+  <text x="996" y="623" text-anchor="middle" font-size="19" font-weight="700" fill="#a7f3d0">04</text>
+  <text x="1030" y="625" class="role">Verificación</text>
+  <text x="975" y="674" class="body muted">Crea y ejecuta pruebas</text>
+  <text x="975" y="704" class="body muted">Comprueba los requisitos</text>
+  <rect x="975" y="725" width="240" height="34" rx="8" fill="#0e192b"/>
+  <text x="1095" y="748" text-anchor="middle" class="code">verification.md</text>
+  <text x="975" y="786" class="gate">TÚ aceptas el resultado</text>
+
+  <text x="640" y="832" text-anchor="middle" font-size="19" class="muted">Cada especialista usa sus instrucciones de trabajo y el modelo que tú eliges.</text>
+
+  <rect x="40" y="852" width="1200" height="108" rx="18" fill="#242735" stroke="#786135" stroke-width="1.5"/>
+  <text x="62" y="883" font-size="20" font-weight="600" fill="#fcd34d">Si una comprobación falla, el orquestador coordina la corrección:</text>
+  <rect x="60" y="900" width="245" height="40" rx="10" fill="#162338"/>
+  <text x="182" y="927" text-anchor="middle" font-size="21">Fallos detectados</text>
+  <path class="flow" d="M313 920H357" marker-end="url(#arrow)"/>
+  <rect x="365" y="900" width="245" height="40" rx="10" fill="#173b48"/>
+  <text x="487" y="927" text-anchor="middle" font-size="21" font-weight="700">Orquestador principal</text>
+  <path class="flow" d="M618 920H662" marker-end="url(#arrow)"/>
+  <rect x="670" y="900" width="245" height="40" rx="10" fill="#162338"/>
+  <text x="792" y="927" text-anchor="middle" font-size="21">Corrección del código</text>
+  <path class="flow" d="M923 920H967" marker-end="url(#arrow)"/>
+  <rect x="975" y="900" width="245" height="40" rx="10" fill="#162338"/>
+  <text x="1097" y="927" text-anchor="middle" font-size="21">Nueva verificación</text>
+  <text x="62" y="989" font-size="19" class="muted">El ciclo respeta el alcance aprobado. Los fallos pendientes siguen bloqueados hasta resolverse.</text>
+
+  <rect x="40" y="1015" width="1200" height="73" rx="16" fill="#111c2d" stroke="#2d435b" stroke-width="1.5"/>
+  <text x="62" y="1044" font-size="21" font-weight="700" fill="#5eead4">Registro del proyecto</text>
+  <text x="62" y="1070" font-size="17" class="muted">Trazabilidad + continuidad</text>
+  <text x="330" y="1043" class="code">specs/0001-funcion/ · spec.md · plan.md · tasks.md</text>
+  <text x="330" y="1070" class="code">verification.md · history.md · decisiones del usuario</text>
+</svg>

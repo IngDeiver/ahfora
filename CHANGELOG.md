@@ -1,6 +1,14 @@
 # Changelog
 
-## 0.1.0 — Unreleased
+## 0.1.1 — 2026-10-30
+
+- First-use confirmation of application source locations, with language/toolchain
+  context, existing-layout preservation and approved paths carried into role handoffs.
+- Explicit SDD explanation and an early install/open/describe quick start in the README.
+- Spanish workflow diagram and launch post with installation and usage examples.
+- CLI version assertion follows package metadata across releases.
+
+## 0.1.0 — 2026-10-30
 
 - Visual workflow diagram covering the main orchestrator, specialists, Engram,
   user approvals, persistent project records and the correction loop.

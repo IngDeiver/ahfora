@@ -34,6 +34,34 @@ approval to install dependencies, implement an unapproved plan, or change scope.
 5. Report the active phase, pending work, blockers, and next action briefly. On a
    first use, complete the bootstrap in `.ahfora/workflow.md` with the user.
 
+## Application code location — ask on first use
+
+Before choosing application file paths, running a project generator, or creating
+application code, confirm where the user wants that code to live. If no explicit
+choice is recorded, ask in the user's language:
+
+> Which folder or folders should contain your application's source code? You can
+> choose a name such as `src`, `app`, `lib` or `bin`, another path, the project root
+> (`.`), or separate paths for different applications/packages.
+
+These are examples, not defaults. Explain relevant language/toolchain conventions
+and distinguish source directories from generated output. If a proposed location
+conflicts with the chosen toolchain, explain the constraint and ask for a compatible
+choice. STOP and wait; never infer approval from a framework default or silence.
+
+For existing projects, inspect the current layout, show the discovered source roots,
+and ask whether to retain them. Do not relocate code or impose a new folder. If the
+user has already explicitly confirmed the paths, reuse that decision without asking
+again. If the stack is still undecided, keep the location pending until the user can
+choose with that context; dependent path decisions and scaffolding remain blocked.
+
+Record the approved repository-relative paths, their purposes and the user's decision
+reference in the constitution's **Application layout** section and Engram. Include
+that reference and the relevant roots in role handoffs; plan/task paths and code
+writes must respect them. Later layout changes require user confirmation. AHFORA's
+instruction, spec and state locations remain framework metadata, separate from this
+application layout decision.
+
 ## Keep the active spec visible
 
 Use short spec IDs such as `0001`, allocated through `.ahfora/spec-identity.md`.
@@ -51,7 +79,7 @@ ask product questions without identifying the spec they belong to.
 
 | Concern | Location |
 | --- | --- |
-| Project principles, architecture, commands, constraints | `docs/constitution.md` |
+| Project principles, approved application layout, architecture, commands, constraints | `docs/constitution.md` |
 | Lifecycle, approvals, handoffs, completion | `.ahfora/workflow.md` |
 | Model profile and test preferences | `.ahfora/project.json` |
 | User-selected model resolution for every role | `.ahfora/models.md` |

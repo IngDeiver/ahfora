@@ -12,6 +12,23 @@ first and propose a baseline; do not replace the architecture merely to fit a te
 - Existing behavior that must be preserved: TODO or N/A with reason
 - Artifact language: English. User conversations follow the user's language.
 
+## Application layout
+
+- Status: pending user answer
+- Language/toolchain and relevant layout constraints: TODO
+- Approved source root(s), relative to the project root, and purpose of each: TODO
+- Related test/configuration paths and generated-output boundaries: TODO
+- Existing layout to preserve, if applicable: TODO or N/A with reason
+- Decision owner and explicit confirmation reference: TODO
+
+Ask the owner where application code should live before assigning application paths
+or running a project generator. Folder names are user decisions informed by the
+language/toolchain, not AHFORA defaults. A custom folder, `.` or multiple source roots
+can be valid choices. Confirm discovered paths in existing projects; do not move
+code without approval. Keep unanswered choices pending and reuse confirmed paths on
+resumption. Pass this decision to every role that plans or writes application files.
+AHFORA instructions, specs and state keep their own framework locations.
+
 ## Architecture decision
 
 - Status: undecided

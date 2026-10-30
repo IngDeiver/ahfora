@@ -6,8 +6,10 @@
 
 # AHFORA
 
-**Agnostic Harness for Agents** is a portable Spec-Driven Development framework for
-AI-assisted software development. A small npm CLI installs instructions, specialist
+**Agnostic Harness for Agents** is a portable AI-agent framework/harness built on
+**Spec-Driven Development (SDD)**. In SDD, you clarify and approve a specification
+before implementation; that specification guides the plan, code and verification.
+A small npm CLI installs instructions, specialist
 roles, skills, templates, and local project state conventions into your repository.
 Your coding agent then follows the process with you.
 
@@ -17,6 +19,29 @@ AHFORA is model- and application-stack-agnostic. It deliberately requires
 [Engram](https://github.com/Gentleman-Programming/engram) for persistent memory.
 It supports native adapters for Claude Code, OpenCode and Gemini CLI, plus a generic
 sequential-role mode for other capable coding agents.
+
+## Quick start: install, open, describe
+
+With **Node.js 22 or later**, start from your project's root directory:
+
+1. **Install AHFORA** with the supported native adapters:
+
+   ```sh
+   npx ahfora@latest init . --clients all
+   ```
+
+2. **Open or restart your AI client** in that directory: Claude Code, OpenCode or
+   Gemini CLI.
+3. **Describe what you want to build**, for example:
+
+   > Build a task manager with projects, due dates and reminders.
+
+**AHFORA starts automatically from that request.** The agent checks Engram access,
+asks for missing project decisions and guides you through the SDD workflow. You
+approve the specification, the plan and the verified result as you go.
+
+See [installation options](#install-into-a-project) or the
+[full conversational workflow](#start-working-with-your-ai) for more detail.
 
 ## How it works
 
@@ -117,9 +142,16 @@ the new instructions. See [client integration](docs/clients.md).
 The agent checks Engram, recovers existing work and chooses the appropriate role.
 Every subagent uses your selected model; if that choice is unknown, the agent asks
 before invoking it. For a new project, it also asks about missing settings such as
-architecture, approved commands and the planner's `high-reasoning` profile. Those are project decisions, not
-an activation procedure. Existing confirmed settings are reused. Spec, plan and final
-acceptance still require your approval.
+architecture, approved commands and the planner's `high-reasoning` profile. On first
+use, it also asks **where your application's source code should live**: a folder
+you name, the project root, or multiple paths for different applications/packages.
+It explains relevant language/toolchain conventions and waits for your choice before
+assigning application paths or generating code. For existing projects, it asks
+whether to retain the detected layout. The approved paths are recorded in
+`docs/constitution.md` and reused in later sessions and role handoffs.
+
+Those are project decisions, not an activation procedure. Existing confirmed settings
+are reused. Spec, plan and final acceptance still require your approval.
 
 Then work conversationally:
 
@@ -145,7 +177,7 @@ Unresolved failures then require your decision. There are no mandatory slash com
 ```text
 your-project/
 ├── AGENTS.md                         # Orchestration + owner-editable instructions
-├── docs/constitution.md              # Architecture, commands, constraints, decisions
+├── docs/constitution.md              # Source layout, architecture, commands, decisions
 ├── specs/README.md
 ├── .agents/skills/                   # Seven canonical portable skills
 └── .ahfora/

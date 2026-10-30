@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readdir, rm } from 'node:fs/promises';
+import { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { parseArgs, run } from '../src/cli.js';
@@ -31,7 +31,8 @@ test('help, version, usage errors and dry run do not write to the project', asyn
   assert.match(out, /Usage:/);
   out = '';
   assert.equal(await run(['--version'], io), 0);
-  assert.match(out, /^0\.1\.0\n$/);
+  const { version } = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
+  assert.equal(out, `${version}\n`);
   assert.equal(await run(['--unknown'], io), 2);
   assert.match(err, /Unknown option/);
   out = '';

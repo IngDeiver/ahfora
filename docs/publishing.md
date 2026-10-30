@@ -49,8 +49,8 @@ trusted-publishing flow separately instead of embedding a long-lived token here.
 After publication, verify the exact version in a disposable directory:
 
 ```sh
-npx ahfora@0.1.0 --version
-npx ahfora@0.1.0 init ahfora-smoke-project --clients all
+npx ahfora@0.1.1 --version
+npx ahfora@0.1.1 init ahfora-smoke-project --clients all
 ```
 
 Inspect the output and exercise the bootstrap in a supported client. Replace the

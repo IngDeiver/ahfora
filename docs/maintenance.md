@@ -68,7 +68,7 @@ running before removing that directory. Do not remove someone else's active lock
 
 ## Upgrading to another framework version
 
-Version `0.1.0` deliberately refuses a different manifest version instead of guessing
+The installer deliberately refuses a different manifest version instead of guessing
 how to merge changed workflow rules. There is no automatic `update` command.
 
 1. Preserve the current project state and local improvement history.

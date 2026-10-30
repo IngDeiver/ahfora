@@ -1,6 +1,6 @@
 {
   "name": "ahfora",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agnostic Harness for Agents: a portable spec-driven development framework for AI coding agents.",
   "type": "module",
   "bin": { "ahfora": "bin/ahfora.js" },
